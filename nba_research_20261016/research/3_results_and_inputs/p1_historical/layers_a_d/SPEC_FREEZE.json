@@ -1,0 +1,18 @@
+{
+ "versions": [
+  {
+   "spec": "SPEC_LAYERS_A_D.md",
+   "version": "v1",
+   "sha256": "04ac85404be7add2281e117f740010d3bb29806be0cc559ac582139652ded1cf",
+   "frozen_at_utc": "2026-10-15T15:14:06Z",
+   "note": "frozen before any layer A-C count; D1 seen once as a layer E control (disclosed in spec)"
+  },
+  {
+   "spec": "SPEC_LAYERS_A_D.md",
+   "version": "v1.1",
+   "sha256": "2c7c8e26c2230abadf14484d2c346e2c92522bf6880b53bae0f397f55c8b5f77",
+   "frozen_at_utc": "2026-10-15T15:33:24Z",
+   "note": "rule fixes after first A-D count (disclosed); sweep rules fixed before the sweep"
+  }
+ ]
+}

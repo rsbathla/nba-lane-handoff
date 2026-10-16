@@ -1,0 +1,12 @@
+type,players with 5+/5+ games both seasons,more attempts vs bottom 10 in both seasons,fewer in both,mixed,corr season1 vs season2
+cs3,86,46,5,35,-0.091
+pu3,95,20,27,48,0.085
+pu2,101,45,11,45,-0.037
+lt10,93,40,15,38,0.103
+wo,90,42,10,38,-0.006
+rim,91,43,7,41,0.201
+paint,87,46,9,32,0.229
+mid,99,36,11,52,0.057
+c3,82,35,10,37,0.031
+atb3,102,45,13,44,-0.033
+trans,75,31,12,32,0.07

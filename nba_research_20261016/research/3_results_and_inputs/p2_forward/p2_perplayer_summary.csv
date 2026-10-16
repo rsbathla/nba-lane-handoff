@@ -1,0 +1,8 @@
+layer,rows,build leads,leads positive in read,build negatives,negatives positive in read,corr build-read
+A,1210,380,0.495,324,0.432,0.117
+B,907,518,0.751,60,0.633,0.129
+C,2687,562,0.509,560,0.414,0.072
+D,3752,1005,0.572,614,0.568,0.026
+E,13760,3172,0.522,2590,0.483,0.034
+lock-time,1103,278,0.547,234,0.449,0.232
+all pregame,22316,5637,0.549,4148,0.485,0.076
