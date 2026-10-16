@@ -1,0 +1,25 @@
+{
+ "versions": [
+  {
+   "spec": "SPEC_LAYER_E.md",
+   "version": "v1",
+   "sha256": "71fe25ea6b042be75b2964158dc041755c3f2335ddf83fa962896e889f913d7b",
+   "frozen_at_utc": "2026-10-15T14:59:54Z",
+   "note": "frozen before any upside count was run"
+  },
+  {
+   "spec": "SPEC_LAYER_E.md",
+   "version": "v1.1",
+   "sha256": "897607e7bedcd32e1f01f78774fab245aa9f55cd7dcdc7447410ac83fc6c3a6d",
+   "frozen_at_utc": "2026-10-15T15:06:33Z",
+   "note": "data-handling clarification; still before any upside count"
+  },
+  {
+   "spec": "SPEC_LAYER_E.md",
+   "version": "v1.2",
+   "sha256": "9380d3f7a082cb2c9c015194a01bd56ca4b23180e11d700eb08774398186ac60",
+   "frozen_at_utc": "2026-10-15T15:29:34Z",
+   "note": "reviewer fixes applied after the first count (disclosed)"
+  }
+ ]
+}

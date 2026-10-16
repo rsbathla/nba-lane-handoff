@@ -1,0 +1,218 @@
+<title>NBA Preseason Team Board</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: team rail on the left (chips on phones), one team at a time on the right: the read, rotation table, then the posts feed. */
+:root{
+  --bg:#f3f5f7; --panel:#ffffff; --ink:#15202b; --muted:#5b6876; --line:#dde3e9; --soft:#eaeef2;
+  --accent:#c4561f; --accent-ink:#ffffff; --accent-soft:#fbe9df; --navy:#1d3a5f;
+  --good:#1f7a4d; --good-soft:#e2f2e9; --warn:#a2650a; --warn-soft:#fbf0dc; --bad:#b3372f; --bad-soft:#f8e3e1;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif; --body:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10161d; --panel:#17202a; --ink:#e6ebf0; --muted:#9aa7b4; --line:#2a3644; --soft:#1f2a36;
+  --accent:#ef7d45; --accent-ink:#10161d; --accent-soft:#3a2418; --navy:#9cc0ea;
+  --good:#5cc391; --good-soft:#173326; --warn:#e3a94a; --warn-soft:#352a14; --bad:#ef7b72; --bad-soft:#3a1e1c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10161d; --panel:#17202a; --ink:#e6ebf0; --muted:#9aa7b4; --line:#2a3644; --soft:#1f2a36;
+  --accent:#ef7d45; --accent-ink:#10161d; --accent-soft:#3a2418; --navy:#9cc0ea;
+  --good:#5cc391; --good-soft:#173326; --warn:#e3a94a; --warn-soft:#352a14; --bad:#ef7b72; --bad-soft:#3a1e1c; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.5}
+a{color:var(--navy)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 24px;padding-bottom:14px;border-bottom:3px solid var(--ink);margin-bottom:18px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1;letter-spacing:.01em;margin:0;text-transform:uppercase}
+.sub{color:var(--muted);font-size:13px;max-width:70ch}
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:start}
+nav.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);max-height:calc(100vh - 24px);overflow:auto;padding-right:4px}
+.rail h2{font-family:var(--display);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.rail h2:first-child{margin-top:0}
+.tlist{display:flex;flex-direction:column;gap:2px}
+.tbtn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:transparent;color:var(--ink);font:inherit;padding:5px 8px;border-radius:4px;cursor:pointer}
+.tbtn:hover{background:var(--soft)}
+.tbtn[aria-current="true"]{background:var(--ink);color:var(--bg)}
+.tbtn .ab{font-family:var(--display);font-weight:700;font-size:16px;width:36px;letter-spacing:.03em}
+.tbtn .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}
+.tbtn .ct{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.tbtn[aria-current="true"] .ct{color:inherit;opacity:.75}
+main{min-width:0;display:flex;flex-direction:column;gap:18px}
+.thead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px}
+.thead h2{font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,48px);line-height:1;margin:0;text-transform:uppercase}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.06em;text-transform:uppercase;padding:2px 10px;border-radius:999px;background:var(--accent);color:var(--accent-ink)}
+.meta{color:var(--muted);font-size:13px}
+section.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px;min-width:0}
+section.card>h3{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+section.card>h3 small{font-family:var(--body);font-weight:400;font-size:12px;letter-spacing:0;text-transform:none;color:var(--muted)}
+.read{border-left:5px solid var(--accent)}
+.read ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+.tablewrap{overflow-x:auto;margin:0 -4px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;min-width:860px}
+th,td{padding:6px 8px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:top}
+th{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--panel);position:sticky;top:0}
+th.grp{text-align:center;border-bottom:2px solid var(--ink);color:var(--ink)}
+td.pl,th.pl{text-align:left}
+td.pl{font-weight:500}
+td.num{font-family:var(--mono);font-size:12.5px}
+td.games{text-align:left;white-space:normal;min-width:280px}
+.named{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:6px;vertical-align:middle}
+.nodot{display:inline-block;width:7px;margin-right:6px}
+.g{display:inline-flex;gap:4px;align-items:baseline;font-family:var(--mono);font-size:11px;padding:1px 6px;border-radius:3px;background:var(--soft);margin:1px 3px 1px 0}
+.g.s{background:var(--ink);color:var(--bg)}
+.dlt{font-family:var(--mono);font-size:11px;padding:0 4px;border-radius:3px;margin-left:4px}
+.dlt.up{background:var(--good-soft);color:var(--good)}
+.dlt.dn{background:var(--bad-soft);color:var(--bad)}
+.dim{color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;color:var(--muted);font-size:12px;margin-top:10px}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.fbtn{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:12.5px;padding:3px 10px;border-radius:999px;cursor:pointer}
+.fbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.feed{display:flex;flex-direction:column;gap:10px}
+.post{border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-width:0;background:var(--panel)}
+.post .ph{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-bottom:4px}
+.post .au{font-weight:600}
+.post .hd{color:var(--muted);font-size:12.5px}
+.post .dt{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.tag{font-size:11px;padding:1px 7px;border-radius:999px;background:var(--soft);color:var(--muted);white-space:nowrap}
+.tag.bm{background:var(--accent-soft);color:var(--accent)}
+.tag.cr{background:var(--good-soft);color:var(--good)}
+.tag.wn{background:var(--warn-soft);color:var(--warn)}
+.post .tx{white-space:pre-wrap;overflow-wrap:anywhere;max-width:85ch}
+.post .qt{margin-top:6px;padding-left:10px;border-left:3px solid var(--line);color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}
+.post .lk{font-size:12.5px;margin-left:auto}
+.post.long .tx{max-height:13.5em;overflow:hidden}
+.post.long.open .tx{max-height:none}
+.more{border:0;background:none;color:var(--navy);font:inherit;font-size:12.5px;padding:4px 0 0;cursor:pointer;text-decoration:underline}
+.prose{max-width:85ch;overflow-wrap:anywhere}
+.prose p{margin:0 0 8px}
+.prose h4{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.06em;text-transform:uppercase;margin:12px 0 4px;color:var(--muted)}
+.empty{color:var(--muted);font-style:italic}
+footer{margin-top:24px;color:var(--muted);font-size:12.5px;max-width:95ch;display:flex;flex-direction:column;gap:6px}
+.search{display:flex;gap:8px;align-items:center}
+.search input{font:inherit;padding:6px 10px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--ink);width:220px;max-width:100%}
+@media (max-width:860px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  nav.rail{position:static;max-height:none;overflow:visible}
+  .tlist{flex-direction:row;flex-wrap:wrap;gap:4px}
+  .tbtn{width:auto;padding:4px 8px;border:1px solid var(--line)}
+  .tbtn .nm,.tbtn .ct{display:none}
+  .tbtn .ab{width:auto}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>NBA Preseason Team Board</h1>
+      <div class="sub" id="sub"></div>
+    </div>
+    <div class="search"><label for="q" class="dim">Find a player</label><input id="q" type="search" placeholder="e.g. Mara" autocomplete="off"></div>
+  </header>
+  <div class="layout">
+    <nav class="rail" aria-label="Teams" id="rail"></nav>
+    <main id="main"></main>
+  </div>
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const D=/*__DATA__*/null;
+const $=(t,a={},...kids)=>{const e=document.createElement(t);for(const[k,v]of Object.entries(a)){if(k==='class')e.className=v;else if(k==='text')e.textContent=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(v!==null&&v!==undefined)e.setAttribute(k,v)}for(const c of kids.flat()){if(c===null||c===undefined||c===false)continue;e.append(c instanceof Node?c:document.createTextNode(String(c)))}return e};
+const T=D.teams, OPEN=D.open, ALL=Object.keys(T).sort((a,b)=>T[a].name.localeCompare(T[b].name));
+const fmt1=v=>v===null||v===undefined?'—':(+v).toFixed(1);
+const postCount=t=>T[t].posts.length+T[t].analyst.length+T[t].relays.length+T[t].bookmarks.length;
+let cur=null, filt='all';
+try{const h=location.hash.slice(1).toUpperCase();if(T[h])cur=h}catch(e){}
+if(!cur){try{const s=localStorage.getItem('nba-board-team');if(s&&T[s])cur=s}catch(e){}}
+if(!cur)cur=OPEN[0];
+
+document.getElementById('sub').textContent=`Preseason box score through ${D.box_through} beside what X, coaches and beat writers said, team by team. Opening night is Oct 20. Built ${D.built}.`;
+
+function rail(){
+  const r=document.getElementById('rail');r.replaceChildren();
+  const grp=(title,list)=>{r.append($('h2',{text:title}));const l=$('div',{class:'tlist'});for(const t of list){l.append($('button',{class:'tbtn','aria-current':String(t===cur),onclick:()=>go(t)},$('span',{class:'ab',text:t}),$('span',{class:'nm',text:T[t].name}),$('span',{class:'ct',text:postCount(t)})))}r.append(l)};
+  grp('Opening night · Oct 20',OPEN);
+  grp('All teams',ALL.filter(t=>!OPEN.includes(t)));
+}
+function go(t){cur=t;filt='all';try{localStorage.setItem('nba-board-team',t)}catch(e){}try{history.replaceState(null,'','#'+t)}catch(e){}rail();render();document.getElementById('main').scrollIntoView({block:'start',behavior:'auto'})}
+
+// [text](url) -> link, everything else as text
+function richText(s){const frag=document.createDocumentFragment();const re=/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g;let i=0,m;while((m=re.exec(s))){frag.append(s.slice(i,m.index));frag.append($('a',{href:m[2],target:'_blank',rel:'noopener'},m[1]));i=re.lastIndex}frag.append(s.slice(i));return frag}
+
+function playerTable(t){
+  const rows=T[t].players;
+  const head=$('thead',{},
+    $('tr',{},$('th',{class:'pl'}),$('th',{class:'grp',colspan:4,text:'Preseason 2026'}),$('th',{class:'grp',colspan:4,text:'2025-26'}),$('th',{class:'pl'})),
+    $('tr',{},$('th',{class:'pl',text:'Player'}),$('th',{text:'G'}),$('th',{text:'MPG'}),$('th',{text:'Starts'}),$('th',{text:'USG%'}),$('th',{text:'G'}),$('th',{text:'MPG'}),$('th',{text:'Start%'}),$('th',{text:'USG%'}),$('th',{class:'pl',text:'Each preseason game: date, opponent, minutes, usage (dark = started)'})));
+  const body=$('tbody');
+  for(const p of rows){
+    const d=(p.usg!=null&&p.usg25!=null)?p.usg-p.usg25:null;
+    const dl=d===null||Math.abs(d)<3?null:$('span',{class:'dlt '+(d>0?'up':'dn'),title:'Preseason usage minus 2025-26 usage',text:(d>0?'+':'')+d.toFixed(0)});
+    const games=p.gp?p.games.map(g=>$('span',{class:'g'+(g.s?' s':''),title:g.s?'Started':'Bench'},`${g.d.replace('-','/')} ${g.opp} ${g.min??'?'}m ${g.u??'–'}%`)):[$('span',{class:'dim',text:'No preseason game'})];
+    body.append($('tr',{'data-name':p.name.toLowerCase()},
+      $('td',{class:'pl'},p.named?$('span',{class:'named',title:'Named in a post below'}):$('span',{class:'nodot'}),p.name),
+      $('td',{class:'num',text:p.gp||'0'}),$('td',{class:'num',text:p.gp?fmt1(p.mpg):'—'}),
+      $('td',{class:'num',text:p.gp?(p.box?`${p.starts}/${p.box}`:'n/a'):'—'}),
+      $('td',{class:'num'},p.gp?fmt1(p.usg):'—',dl),
+      $('td',{class:'num',text:p.gp25??'—'}),$('td',{class:'num',text:fmt1(p.mpg25)}),$('td',{class:'num',text:p.st25!=null?p.st25+'%':'—'}),$('td',{class:'num',text:fmt1(p.usg25)}),
+      $('td',{class:'games'},games)));
+  }
+  return $('div',{class:'tablewrap'},$('table',{},head,body));
+}
+
+function feedItems(t){
+  const x=T[t], items=[];
+  for(const p of x.analyst)items.push({k:'analyst',date:p.date_utc,author:p.author,handle:p.handle,url:p.url,text:p.text,src:p.source==='bookmark'?'bm':'cr',topic:p.excerpt?`${x.name.split(' ').pop()} section of a multi-team post`:'analyst post'});
+  for(const p of x.posts)items.push({k:/coach/.test(p.topic)?'coach':((p.source==='bookmark')?'analyst':'beat'),date:p.date_utc,author:p.author,handle:p.handle,url:p.url,text:p.text,quoted:p.quoted_text,src:p.source==='bookmark'?'bm':(p.via==='chrome'?'cr':'ws'),topic:p.topic,trunc:p.text_truncated});
+  for(const q of x.relays)items.push({k:'coach',date:(q.source_date.match(/\d{4}-\d{2}-\d{2}/)||[''])[0]||'2026-10-14',author:'Full Court Press relay',handle:'fcpnba',url:q.source_url,text:q.claim,src:'fcp',topic:'coach / beat quote'});
+  for(const b of x.bookmarks)items.push({k:'analyst',date:b.event_date,author:b.author,handle:null,url:b.url,text:b.claim,src:'codex',topic:`Codex note on your bookmark (${b.event_date} games)`});
+  items.sort((a,b)=>b.date.localeCompare(a.date));
+  return items;
+}
+const SRC={bm:['your bookmark','bm'],cr:['read in your Chrome','cr'],ws:['web search',''],fcp:['quote relay','wn'],codex:['Codex summary','']};
+function postEl(it){
+  const long=it.text.length>700;
+  const el=$('article',{class:'post'+(long?' long':'')},
+    $('div',{class:'ph'},$('span',{class:'au',text:it.author}),it.handle?$('span',{class:'hd',text:'@'+it.handle}):null,$('span',{class:'dt',text:it.date.slice(0,10)}),$('span',{class:'tag',text:it.topic}),$('span',{class:'tag '+SRC[it.src][1],text:SRC[it.src][0]}),it.url?$('a',{class:'lk',href:it.url,target:'_blank',rel:'noopener',text:'Open post ↗'}):null),
+    $('div',{class:'tx',text:it.text}),
+    it.quoted?$('div',{class:'qt',text:'Quoting: '+it.quoted}):null,
+    it.trunc?$('div',{class:'dim',text:'Cut off: the full post would not load.'}):null);
+  if(long){const b=$('button',{class:'more',text:'Show all'});b.onclick=()=>{el.classList.toggle('open');b.textContent=el.classList.contains('open')?'Show less':'Show all'};el.append(b)}
+  return el;
+}
+
+function render(){
+  const x=T[cur], m=document.getElementById('main'); m.replaceChildren();
+  const items=feedItems(cur);
+  m.append($('div',{class:'thead'},$('h2',{text:x.name}),x.game?$('span',{class:'pill',text:'Opening night · '+x.game}):null,$('span',{class:'meta',text:`${items.length} posts and notes · ${x.players.filter(p=>p.gp).length} players in preseason`})));
+  if(x.notes)m.append($('section',{class:'card read'},$('h3',{},'The read',$('small',{text:'what the posts change, checked against the box score'})),$('ul',{},x.notes.map(n=>$('li',{text:n})))));
+  m.append($('section',{class:'card'},$('h3',{},'Rotation',$('small',{text:'roster capture 10-15; players who played this preseason, averaged 12+ minutes last season, or are named in a post'})),playerTable(cur),
+    $('div',{class:'legend'},$('span',{},$('span',{class:'named'}),'named in a post below'),$('span',{},$('span',{class:'g s',text:'10/14 CHA 24m 20%'}),' started'),$('span',{},$('span',{class:'g',text:'10/10 PHI 19m 15%'}),' bench'),$('span',{},$('span',{class:'dlt up',text:'+5'}),' usage 3+ points above last season'),$('span',{text:'Usage = box formula, minutes-weighted. Stars sit second halves in preseason, so a low number on a star means little.'}))));
+  const kinds=[['all','All'],['analyst','Analysts'],['beat','Lineups & beat'],['coach','Coach quotes']];
+  const feed=$('div',{class:'feed'});
+  const draw=()=>{feed.replaceChildren();const its=items.filter(i=>filt==='all'||i.k===filt);if(!its.length)feed.append($('p',{class:'empty',text:'Nothing in this group for this team. Search reaches team, beat and big accounts best, so an empty group is a gap in coverage, not a quiet team.'}));its.forEach(i=>feed.append(postEl(i)))};
+  const fb=$('div',{class:'filters'},kinds.map(([k,l])=>{const n=k==='all'?items.length:items.filter(i=>i.k===k).length;return $('button',{class:'fbtn','aria-pressed':String(filt===k),onclick:e=>{filt=k;fb.querySelectorAll('.fbtn').forEach(b=>b.setAttribute('aria-pressed','false'));e.currentTarget.setAttribute('aria-pressed','true');draw()}},`${l} (${n})`)}));
+  draw();
+  m.append($('section',{class:'card'},$('h3',{},'Posts',$('small',{text:'newest first; analysts\' multi-team notes are cut to this team\'s section'})),fb,feed));
+  const pv=$('div',{class:'prose'});
+  if(x.preview){pv.append($('h4',{text:'Preview and news'}),$('p',{},richText(x.preview)))}
+  if(x.availability){pv.append($('h4',{text:'Availability as of 10-14'}),$('p',{},richText(x.availability)))}
+  if(x.conflict){pv.append($('h4',{text:'Analysts disagree'}),$('p',{text:x.conflict}))}
+  if(pv.childNodes.length)m.append($('section',{class:'card'},$('h3',{},'Team preview',$('small',{text:'Codex team guide summary of NBA.com previews and team news, with links'})),pv));
+  applySearch();
+}
+
+// player search: jump to the player's team and highlight the row
+const q=document.getElementById('q');
+function applySearch(){const v=q.value.trim().toLowerCase();document.querySelectorAll('tbody tr').forEach(r=>{r.style.background=v&&r.dataset.name.includes(v)?'var(--accent-soft)':''})}
+q.addEventListener('input',()=>{const v=q.value.trim().toLowerCase();if(v.length>=3){const hit=ALL.find(t=>T[t].players.some(p=>p.name.toLowerCase().includes(v)));if(hit&&hit!==cur){cur=hit;filt='all';rail();render();return}}applySearch()});
+
+document.getElementById('foot').append(
+  $('div',{text:'Sources: NBA.com preseason game log and advanced box scores (all 53 games through '+D.box_through+'); 2025-26 from the research frame; X posts read in your Chrome on 10-15 (your bookmarks back to 09-25 plus searches since 10-01) and found by web search (text as the search shows it); Full Court Press quote relays; Codex team guide (10-14) for previews and bookmark notes.'}),
+  $('div',{text:'Posts are opinions and reports, not confirmed roles. X stops loading author searches after about 9 posts, so Thunder Dan, Adam Stock and Besbris are only partly covered. Post dates are UTC, so an evening ET post shows the next day.'}));
+rail();render();
+</script>
