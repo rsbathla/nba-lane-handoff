@@ -1,0 +1,51 @@
+{
+  "entries": [
+    {
+      "sport": "NFL",
+      "site": "DK",
+      "url": "https://dknetwork.draftkings.com/2025/08/27/nfl-dfs-beginners-guide-draftkings/",
+      "published_date": "2025-08-27",
+      "captured_at_utc": "2026-10-13T01:02:19.294465+00:00",
+      "html_sha256": "25a8f43cee217111ac7345f34f91f76ebd8a2e42ac47a0fc3c9d50fb9b930225",
+      "purpose": "Current official operator explanation corroborates replay coefficients; not a historical contest settlement receipt",
+      "response_bytes": 164343,
+      "corroborated": {
+        "fumble_lost": -1,
+        "passing_yards": 0.04,
+        "passing_td": 4,
+        "interception": -1,
+        "rush_rec_yards": 0.1,
+        "rush_rec_td": 6,
+        "reception": 1,
+        "passing300_bonus": 3,
+        "rush100_bonus": 3,
+        "receiving100_bonus": 3,
+        "two_point_conversion": 2,
+        "return_td": 6,
+        "offensive_fumble_recovery_td": 6
+      }
+    },
+    {
+      "sport": "NBA",
+      "site": "DK",
+      "url": "https://dknetwork.draftkings.com/2025/10/17/nba-daily-fantasy-101-how-to-play-dfs-on-draftkings/",
+      "published_date": "2025-10-17",
+      "captured_at_utc": "2026-10-13T01:02:20.255537+00:00",
+      "html_sha256": "d3b73d302fd5316103e21a3a5a80765991c3c463b33c126dc539f22fc2d72c81",
+      "purpose": "Current official operator explanation corroborates replay coefficients; not a historical contest settlement receipt",
+      "response_bytes": 165804,
+      "corroborated": {
+        "points": 1,
+        "three_made": 0.5,
+        "rebounds": 1.25,
+        "assists": 1.5,
+        "steals": 2,
+        "blocks": 2,
+        "turnovers": -0.5,
+        "double_double": 1.5,
+        "triple_double": 3
+      }
+    }
+  ],
+  "scope": "Rule coefficients only. Public numeric facts extracted; source bodies are not redistributed. Generic help/rules URLs returned navigation without scoring, so official dated guides are used. FanDuel full rules access returned403; retained contract and official2024 bonus article remain distinctly qualified."
+}
